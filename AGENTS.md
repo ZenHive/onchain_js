@@ -4246,3 +4246,33 @@ mix credo --strict --format json               # Static analysis
 - **onchain** — Core Ethereum: `{:onchain, path: "../onchain"}` (or `"~> 0.4"` from Hex)
 - **onchain_aave** — Aave V3 wrappers: `{:onchain_aave, path: "../onchain_aave"}` (or `"~> 0.1"` from Hex)
 - **onchain_evm** — Rust NIFs + codegen: `{:onchain_evm, path: "../onchain_evm"}` (or `"~> 0.1"` from Hex)
+
+## Cursor Cloud specific instructions
+
+### Runtime
+
+- **Erlang/OTP 27** installed via `ppa:rabbitmq/rabbitmq-erlang-27` (system packages).
+- **Elixir 1.18.4** installed at `/usr/local/elixir/bin/`. PATH is set in `~/.bashrc`.
+- Precompiled NIFs for QuickBEAM (Zig) and OXC (Rust) download automatically from GitHub on first `mix compile` — no Zig or Rust toolchain needed on the VM.
+
+### Services
+
+This is a pure Elixir library — no database, no web server, no external services needed. The only runtime is the BEAM itself.
+
+### Running tests, lint, and build
+
+Standard commands per `CLAUDE.md` / `README.md`:
+
+```bash
+mix test                                    # unit tests (integration excluded by default)
+mix test --include integration              # unit + integration (requires QuickBEAM runtime)
+mix format --check-formatted                # formatting check
+mix credo --strict                          # static analysis
+mix compile --warnings-as-errors            # compile check
+```
+
+### Gotchas
+
+- `dialyzer_json` warns about requiring Elixir `~> 1.19` — this is a soft warning, the dep still compiles and works on 1.18.x.
+- The `descripex` dep produces Jason-not-available warnings during compilation in `:test` env — these are expected since Jason is not a test dependency for descripex's manifest task.
+- `node_modules/` may exist from prior `mix npm.install` runs; it is gitignored and safe to leave in place.
