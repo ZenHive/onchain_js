@@ -71,7 +71,7 @@ jobs:
         run: mix doctor --raise
 
       - name: Sobelow (honors .sobelow-conf, exit=Low)
-        run: mix sobelow
+        run: mix sobelow --exit Low
 
       # Coverage tiers (per ~/.claude/includes/critical-rules.md § "RAISE
       # COVERAGE BEFORE MUTATING"):
