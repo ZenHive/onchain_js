@@ -65,9 +65,8 @@ jobs:
       - name: Credo (strict, excluding TODO/FIXME design tags)
         run: mix credo --strict --ignore TagTODO,TagFIXME
 
-      # `--raise` overrides .doctor.exs raise=false to gate CI without changing
-      # local behavior.
-      - name: Doctor (--raise overrides .doctor.exs raise=false to gate CI)
+      # Run Doctor with `--raise` in CI so documentation issues fail the harness.
+      - name: Doctor (CI gate with --raise)
         run: mix doctor --raise
 
       - name: Sobelow (honors .sobelow-conf, exit=Low)
