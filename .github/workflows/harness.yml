@@ -59,10 +59,9 @@ jobs:
       - name: Format check
         run: mix format --check-formatted
 
-      # tag_todo / tag_fixme stay enabled in .credo.exs (TODO/FIXME = tracked-debt
-      # visibility, not regressions). Excluding them here lets the harness fail
-      # only on real Credo regressions — TODO accumulation across sessions
-      # shouldn't gate PRs.
+      # Exclude TagTODO/TagFIXME in CI so the harness fails only on actionable
+      # Credo regressions. TODO/FIXME markers remain visible in code review, but
+      # accumulated tracked-debt tags across sessions should not gate PRs.
       - name: Credo (strict, excluding TODO/FIXME design tags)
         run: mix credo --strict --ignore TagTODO,TagFIXME
 
